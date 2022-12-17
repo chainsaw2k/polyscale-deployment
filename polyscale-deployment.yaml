@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: polyscaleps
+  name: polyscaleps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: polyscaleps
+  template:
+    metadata:
+      labels:
+        app: polyscaleps
+    spec:
+      containers:
+      - image: ghcr.io/chainsaw2k/ntu-worker
+        imagePullPolicy: Always
+        name: polyscaleps
+        env:
+          - name: TEST
+            value: latency
+          - name: URL
+            value: YOUR_DATABASE_URL_HERE
+          - name: protocol
+            value: postgres
+          - name: QUERY
+            value: "select * from foodsales limit 1;"
+        resources:
+          requests:
+            memory: ".1Gi"
+            cpu: "100m"
+          limits:
+            memory: ".1Gi"
+            cpu: "100m"
